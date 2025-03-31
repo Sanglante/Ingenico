@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Terminal de Paiement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .terminal-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .terminal-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2), 0 6px 8px -2px rgba(0, 0, 0, 0.15);
+        }
+        .symptom-button, .question-button, .solution-button {
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            margin-bottom: 0.5rem;
+            display: block;
+            width: 100%;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+        }
+        .symptom-button:hover, .question-button:hover, .solution-button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.12);
+        }
+        .selected {
+            background-color: #6b7280 !important; /* Tailwind gray-500 */
+            color: white !important;
+            font-weight: 600;
+        }
+        #diagnostic-steps {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+        #diagnostic-steps.show {
+            max-height: 500px; /* Ajustez selon le contenu attendu */
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
+        <h1 class="text-2xl font-semibold text-blue-600 text-center mb-6">Diagnostic et Résolution de Pannes de Terminaux de Paiement</h1>
+        <div id="model-selection" class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-700 text-center mb-4">Étape 1: Sélectionnez le modèle de votre terminal</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="terminal-model">
+                    <img src="https://placehold.co/400x300/EEE/31343C?text=Mod%C3%A8le+1&font=Montserrat" alt="Modèle 1" class="terminal-image" data-model="model1">
+                    <p class="text-center text-gray-600 mt-2">Modèle 1</p>
+                </div>
+                <div class="terminal-model">
+                    <img src="https://placehold.co/400x300/EEE/31343C?text=Mod%C3%A8le+2&font=Montserrat" alt="Modèle 2" class="terminal-image" data-model="model2">
+                    <p class="text-center text-gray-600 mt-2">Modèle 2</p>
+                </div>
+                <div class="terminal-model">
+                    <img src="https://placehold.co/400x300/EEE/31343C?text=Mod%C3%A8le+3&font=Montserrat" alt="Modèle 3" class="terminal-image" data-model="model3">
+                    <p class="text-center text-gray-600 mt-2">Modèle 3</p>
+                </div>
+            </div>
+        </div>
+        <div id="diagnostic-steps" class="mt-8">
+            <div id="symptom-selection" class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-700 text-center mb-4">Étape 2: Sélectionnez le symptôme de la panne</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <button class="symptom-button bg-indigo-500 hover:bg-indigo-700 text-white" data-symptom="ecran_noir">Écran noir</button>
+                    <button class="symptom-button bg-indigo-500 hover:bg-indigo-700 text-white" data-symptom="clavier_hs">Clavier ne fonctionne pas</button>
+                    <button class="symptom-button bg-indigo-500 hover:bg-indigo-700 text-white" data-symptom="capot_casse">Capot cassé</button>
+                    <button class="symptom-button bg-indigo-500 hover:bg-indigo-700 text-white" data-symptom="papier_blanc">Le papier sort blanc</button>
+                    <button class="symptom-button bg-indigo-500 hover:bg-indigo-700 text-white" data-symptom="refus_cartes">Refuse toutes les cartes</button>
+                    <button class="symptom-button bg-indigo-500 hover:bg-indigo-700 text-white" data-symptom="pas_argent">Ne transmet pas l'argent</button>
+                    <button class="symptom-button bg-indigo-500 hover:bg-indigo-700 text-white" data-symptom="code_erreur">Code erreur sur le ticket</button>
+                </div>
+            </div>
+            <div id="question-answer" class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-700 text-center mb-4">Étape 3: Affinez le diagnostic</h2>
+                <div id="questions-container" class="space-y-4">
+                    </div>
+            </div>
+            <div id="solution-display">
+                <h2 class="text-xl font-semibold text-gray-700 text-center mb-4">Solutions possibles</h2>
+                <ul id="solutions-list" class="list-disc list-inside space-y-2">
+                    </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        const modelSelection = document.getElementById('model-selection');
+        const diagnosticSteps = document.getElementById('diagnostic-steps');
+        const symptomSelection = document.getElementById('symptom-selection');
+        const questionAnswer = document.getElementById('question-answer');
+        const questionsContainer = document.getElementById('questions-container');
+        const solutionDisplay = document.getElementById('solution-display');
+        const solutionsList = document.getElementById('solutions-list');
+        const terminalImages = document.querySelectorAll('.terminal-image');
+        const symptomButtons = document.querySelectorAll('.symptom-button');
+
+        let selectedModel = null;
+        let selectedSymptom = null;
+        let currentQuestions = [];
+        let selectedAnswers = [];
+
+        diagnosticSteps.classList.remove('show');
+        solutionDisplay.style.display = 'none';
+
+        terminalImages.forEach(image => {
+            image.addEventListener('click', () => {
+                selectedModel = image.dataset.model;
+                console.log(`Modèle sélectionné : ${selectedModel}`);
+                terminalImages.forEach(img => img.classList.remove('selected'));
+                image.classList.add('selected');
+                diagnosticSteps.classList.add('show');
+                symptomSelection.style.display = 'block';
+                questionAnswer.style.display = 'none';
+                solutionDisplay.style.display = 'none';
+                selectedSymptom = null;
+                selectedAnswers = [];
+                questionsContainer.innerHTML = '';
+                solutionsList.innerHTML = '';
+                symptomButtons.forEach(button => button.classList.remove('selected'));
+            });
+        });
+
+        symptomButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                selectedSymptom = button.dataset.symptom;
+                console.log(`Symptôme sélectionné : ${selectedSymptom}`);
+                symptomButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                questionAnswer.style.display = 'block';
+                solutionDisplay.style.display = 'none';
+                selectedAnswers = [];
+                questionsContainer.innerHTML = '';
+                solutionsList.innerHTML = '';
+                loadQuestions();
+            });
+        });
+
+        function loadQuestions() {
+            questionsContainer.innerHTML = '';
+            currentQuestions = getQuestionsForSymptom(selectedSymptom, selectedModel);
+            if (currentQuestions && currentQuestions.length > 0) {
+                currentQuestions.forEach((question, index) => {
+                    const questionHTML = document.createElement('div');
+                    questionHTML.classList.add('bg-white', 'rounded-lg', 'p-4', 'shadow-md');
+                    questionHTML.innerHTML = `<h3 class="text-lg font-semibold text-gray-800 mb-2">${question.title}</h3>`;
+                    if (question.type === 'text') {
+                        question.options.forEach(option => {
+                            const optionButton = document.createElement('button');
+                            optionButton.classList.add('question-button', 'bg-gray-200', 'hover:bg-gray-300', 'text-gray-700');
+                            optionButton.textContent = option.text;
+                            optionButton.dataset.option = option.value;
+                            optionButton.addEventListener('click', () => handleAnswer(index, option.value, option.text));
+                            questionHTML.appendChild(optionButton);
+                        });
+                    } else if (question.type === 'image') {
+                        const optionsHTML = document.createElement('div');
+                        optionsHTML.classList.add('grid', 'grid-cols-2', 'gap-4'); // Adjust as needed
+                        question.options.forEach(option => {
+                            const optionDiv = document.createElement('div');
+                            optionDiv.classList.add('terminal-model'); // Reuse styling
+                            const optionImg = document.createElement('img');
+                            optionImg.src = option.image;
+                            optionImg.alt = option.text;
+                            optionImg.classList.add('terminal-image');
+                            optionImg.dataset.option = option.value;
+                            optionImg.addEventListener('click', () => handleAnswer(index, option.value, option.text));
+                            optionDiv.appendChild(optionImg);
+                            const optionText = document.createElement('p');
+                            optionText.classList.add('text-center', 'text-gray-600', 'mt-2');
+                            optionText.textContent = option.text;
+                            optionDiv.appendChild(optionText);
+                            optionsHTML.appendChild(optionDiv);
+                        });
+                        questionHTML.appendChild(optionsHTML);
+                    }
+                    questionsContainer.appendChild(questionHTML);
+                });
+            } else {
+                displaySolutions();
+            }
+        }
+
+        function handleAnswer(questionIndex, answerValue, answerText) {
+            selectedAnswers[questionIndex] = answerValue;
+            console.log(`Réponse à la question ${questionIndex + 1}: ${answerText} (valeur: ${answerValue})`);
+            const questionDiv = questionsContainer.children[questionIndex];
+            const buttons = questionDiv.querySelectorAll('.question-button, .terminal-image'); // Sélectionne les boutons et images
+             buttons.forEach(button => button.classList.remove('selected')); // Supprime la classe 'selected'
+            const selectedButton = questionDiv.querySelector(`[data-option="${answerValue}"]`);
+            if (selectedButton) {
+                 selectedButton.classList.add('selected');
+            }
+
+            // Désactiver les questions précédentes
+            for (let i = 0; i < questionIndex; i++) {
+                const qDiv = questionsContainer.children[i];
+                const btns = qDiv.querySelectorAll('.question-button, .terminal-image');
+                btns.forEach(b => {
+                    b.disabled = true;
+                    b.classList.add('opacity-50', 'cursor-not-allowed');
+                });
+            }
+
+            // Charger la question suivante ou afficher les solutions
+            if (questionIndex < currentQuestions.length - 1) {
+                loadQuestions(selectedSymptom, selectedModel); // Pass selectedModel
+            } else {
+                displaySolutions();
+            }
+        }
+
+        function displaySolutions() {
+            solutionsList.innerHTML = '';
+            const solutions = getSolutionsForSymptom(selectedSymptom, selectedModel, selectedAnswers);
+            if (solutions && solutions.length > 0) {
+                solutions.forEach(solution => {
+                    const solutionItem = document.createElement('li');
+                    solutionItem.classList.add('solution-button', 'bg-green-500', 'hover:bg-green-700', 'text-white');
+                    solutionItem.textContent = solution;
+                    solutionsList.appendChild(solutionItem);
+                });
+                solutionDisplay.style.display = 'block';
+            } else {
+                solutionsList.innerHTML = `<li class="text-center text-gray-700">Aucune solution trouvée. Veuillez contacter le support technique.</li>`;
+                solutionDisplay.style.display = 'block';
+            }
+        }
+
+        function getQuestionsForSymptom(symptom, model) {
+            // Placeholder pour la logique des questions.  Utiliser switch pour organiser les questions par symptôme et modèle.
+            switch (symptom) {
+                case 'ecran_noir':
+                    if (model === 'model1') {
+                        return [
+                            {
+                                title: "L'écran affiche-t-il un rétroéclairage ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "retro_oui" },
+                                    { text: "Non", value: "retro_non" }
+                                ]
+                            },
+                            {
+                                title: "Avez-vous essayé de redémarrer l'appareil ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "redemarrage_oui" },
+                                    { text: "Non", value: "redemarrage_non" }
+                                ]
+                            }
+                        ];
+                    } else if (model === 'model2') {
+                         return [
+                            {
+                                title: "L'écran est-il fissuré ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "fissure_oui" },
+                                    { text: "Non", value: "fissure_non" }
+                                ]
+                            },
+                            {
+                                title: "Le terminal a-t-il subi un choc ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "choc_oui" },
+                                    { text: "Non", value: "choc_non" }
+                                ]
+                            }
+                        ];
+                    }
+                    else {
+                        return [
+                            {
+                                title: "Est-ce que le problème est apparu après une mise à jour ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "maj_oui" },
+                                    { text: "Non", value: "maj_non" }
+                                ]
+                            },
+                            {
+                                title: "Le terminal affiche-t-il des lignes ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "lignes_oui" },
+                                    { text: "Non", value: "lignes_non" }
+                                ]
+                            }
+                        ];
+                    }
+                case 'clavier_hs':
+                    if (model === 'model1') {
+                        return [
+                            {
+                                title: "Toutes les touches sont-elles affectées ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "touches_toutes" },
+                                    { text: "Non", value: "touches_partielles" }
+                                ]
+                            },
+                            {
+                                title: "Le terminal a-t-il été nettoyé récemment ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "nettoye_oui" },
+                                    { text: "Non", value: "nettoye_non" }
+                                ]
+                            }
+                        ];
+                    }  else if (model === 'model2') {
+                        return [
+                            {
+                                title: "Les touches sont-elles bloquées ?",
+                                type: "text",
+                                options: [
+                                     { text: "Oui", value: "bloque_oui" },
+                                     { text: "Non", value: "bloque_non" }
+                                ]
+                            },
+                            {
+                                title: "Le clavier émet-il un son ?",
+                                type: "text",
+                                 options: [
+                                     { text: "Oui", value: "son_oui" },
+                                     { text: "Non", value: "son_non" }
+                                 ]
+                            }
+                        ];
+                    }
+                    else {
+                        return [
+                            {
+                                title: "Le problème est-il apparu après une chute ?",
+                                type: "text",
+                                options: [
+                                    { text: "Oui", value: "chute_oui" },
+                                    { text: "Non", value: "chute_non" }
+                                ]
+                            },
+                            {
+                                 title: "Le clavier est-il rétroéclairé ?",
+                                 type: "text",
+                                 options: [
+                                     { text: "Oui", value: "retro_oui" },
+                                     { text: "Non", value: "retro_non" }
+                                 ]
+                            }
+                        ];
+                    }
+                case 'capot_casse':
+                    return [
+                        {
+                            title: "Quel est l'étendue des dommages ?",
+                            type: "text",
+                            options: [
+                                { text: "Léger (fissure)", value: "dommage_leger" },
+                                { text: "Important (cassé)", value: "dommage_important" },
+                                { text: "Manquant", value: "dommage_manquant" }
+                            ]
+                        },
+                        {
+                            title: "L'appareil fonctionne-t-il normalement ?",
+                            type: "text",
+                            options: [
+                                { text: "Oui", value: "fonctionne_oui" },
+                                { text: "Non", value: "fonctionne_non" }
+                            ]
+                        }
+                    ];
+                case 'papier_blanc':
+                    return [
+                         {
+                            title: "Le rouleau de papier est-il correctement installé ?",
+                            type: "text",
+                            options: [
+                                { text: "Oui", value: "papier_ok" },
+                                { text: "Non", value: "papier_nok" }
+                            ]
+                        },
+                        {
+                            title: "L'imprimante fait-elle du bruit ?",
+                            type: "text",
+                            options: [
+                                { text: "Oui", value: "bruit_oui" },
+                                { text: "Non", value: "bruit_non" }
+                            ]
+                        }
+                    ];
+                case 'refus_cartes':
+                    return [
+                        {
+                            title: "Le problème concerne-t-il tous les types de cartes ?",
+                            type: "text",
+                            options: [
+                                { text: "Oui (CB, Visa, Mastercard...)", value: "toutes_cartes_oui" },
+                                { text: "Non (un seul type)", value: "toutes_cartes_non" }
+                            ]
+                        },
+                        {
+                            title: "Un message d'erreur s'affiche-t-il ?",
+                            type: "text",
+                            options: [
+                                { text: "Oui", value: "message_oui" },
+                                { text: "Non", value: "message_non" }
+                            ]
+                        }
+                    ];
+                case 'pas_argent':
+                    return [
+                        {
+                            title: "La transaction est-elle validée sur le terminal ?",
+                            type: "text",
+                            options: [
+                                { text: "Oui", value: "valide_oui" },
+                                { text: "Non", value: "valide_non" }
+                            ]
+                        },
+                        {
+                            title: "Le problème est-il intermittent ?",
+                            type: "text",
+                            options: [
+                                { text: "Oui", value: "intermittent_oui" },
+                                { text: "Non", value: "intermittent_non" }
+                            ]
+                        }
+                    ];
+                case 'code_erreur':
+                    return [
+                        {
+                            title: "Quel est le code d'erreur affiché ?",
+                            type: "text",
+                            options: [
+                                { text: "Code 1", value: "code_1" },
+                                { text: "Code 2", value: "code_2" },
+                                { text: "Code 3", value: "code_3" },
+                                { text: "Autre", value: "code_autre" }
+                            ]
+                        },
+                        {
+                            title: "Le code d'erreur est-il récurrent ?",
+                            type: "text",
+                            options: [
+                                { text: "Oui", value: "recurrent_oui" },
+                                 { text: "Non", value: "recurrent_non" }
+                            ]
+                        }
+                    ];
+                default:
+                    return [];
+            }
+        }
+
+        function getSolutionsForSymptom(symptom, model, answers) {
+            // Placeholder pour la logique des solutions. Utiliser switch et les réponses pour affiner les solutions.
+             switch (symptom) {
+                case 'ecran_noir':
+                    if (model === 'model1') {
+                        if (answers[0] === 'retro_non') {
+                            return ["Vérifier l'alimentation et les câbles.", "Remplacer l'écran."];
+                        } else if (answers[1] === 'redemarrage_non') {
+                            return ["Redémarrer l'appareil.", "Contacter le support technique."];
+                        } else {
+                            return ["Contacter le support technique pour un diagnostic plus approfondi."];
+                        }
+                    }
+                    else if (model === 'model2') {
+                        if (answers[0] === 'fissure_oui') {
+                            return ["Remplacer l'écran."];
+                        }
+                        else if (answers[1] === 'choc_oui') {
+                             return ["Contacter le support technique pour un diagnostic plus approfondi."];
+                        }
+                        else {
+                            return ["Vérifier l'alimentation et les câbles.", "Contacter le support technique."];
+                        }
+                    }
+                    else {
+                         if (answers[0] === 'maj_oui') {
+                            return ["Restaurer le système à une version antérieure.", "Réinstaller la mise à jour."];
+                        } else if (answers[1] === 'lignes_oui') {
+                            return ["Remplacer l'écran.", "Contacter le support technique."];
+                        } else {
+                            return ["Vérifier l'alimentation et les câbles.", "Contacter le support technique."];
+                        }
+                    }
+                case 'clavier_hs':
+                    if (model === 'model1') {
+                         if (answers[0] === 'touches_toutes') {
+                            return ["Remplacer le clavier.", "Contacter le support technique."];
+                        } else if (answers[1] === 'nettoye_oui') {
+                            return ["Nettoyer à nouveau le clavier en suivant les instructions du manuel.", "Contacter le support technique."];
+                        } else {
+                            return ["Vérifier la connexion du clavier.", "Contacter le support technique."];
+                        }
+                    }
+                    else if (model === 'model2') {
+                         if (answers[0] === 'bloque_oui') {
+                             return ["Nettoyer le clavier.", "Contacter le support technique."];
+                         }
+                         else if (answers[1] === 'son_non') {
+                            return ["Vérifier la connexion du clavier.", "Contacter le support technique."];
+                         }
+                         else{
+                            return ["Remplacer le clavier.", "Contacter le support technique."];
+                         }
+                    }
+                    else {
+                         if (answers[0] === 'chute_oui') {
+                            return ["Contacter le support technique pour un diagnostic plus approfondi.", "Remplacer le clavier."];
+                        } else if (answers[1] === 'retro_non') {
+                            return ["Vérifier la connexion du clavier.", "Contacter le support technique."];
+                        } else {
+                            return ["Remplacer le clavier.", "Contacter le support technique."];
+                        }
+                    }
+                case 'capot_casse':
+                    if (answers[0] === 'dommage_leger') {
+                        return ["Réparer le capot."];
+                    } else if (answers[0] === 'dommage_important' || answers[0] === 'dommage_manquant') {
+                        return ["Remplacer le capot."];
+                    }  else if (answers[1] === 'fonctionne_non') {
+                        return ["Contacter le support technique pour vérifier les composants internes.", "Remplacer le capot."];
+                    }else {
+                        return ["Remplacer le capot."];
+                    }
+                case 'papier_blanc':
+                    if (answers[0] === 'papier_nok') {
+                        return ["Installer correctement le rouleau de papier."];
+                    } else if (answers[1] === 'bruit_non') {
+                        return ["Vérifier l'imprimante.", "Contacter le support technique."];
+                    } else {
+                        return ["Remplacer le rouleau de papier.", "Nettoyer la tête d'impression."];
+                    }
+                case 'refus_cartes':
+                    if (answers[0] === 'toutes_cartes_oui') {
+                        return ["Vérifier la connexion réseau.", "Contacter votre banque."];
+                    } else if (answers[1] === 'message_oui') {
+                        return ["Noter le message d'erreur et contacter le support technique.", "Consulter le manuel de l'appareil."];
+                    } else {
+                        return ["Vérifier la configuration du terminal.", "Contacter le support technique."];
+                    }
+                case 'pas_argent':
+                    if (answers[0] === 'valide_oui') {
+                        return ["Contacter votre banque pour vérifier les transactions.", "Vérifier le journal des transactions."];
+                    } else if (answers[1] === 'intermittent_oui') {
+                        return ["Vérifier la connexion réseau.", "Contacter le support technique."];
+                    } else {
+                        return ["Vérifier la configuration du terminal.", "Contacter votre banque."];
+                    }
+                case 'code_erreur':
+                    if (answers[0] === 'code_1') {
+                        return ["Redémarrer l'appareil.", "Mettre à jour le logiciel."];
+                    } else if (answers[0] === 'code_2') {
+                        return ["Vérifier la connexion réseau.", "Contacter le support technique."];
+                    } else if (answers[0] === 'code_3') {
+                        return ["Vérifier le lecteur de carte.", "Contacter le support technique."];
+                    } else if (answers[0] === 'code_autre') {
+                        return ["Noter le code d'erreur et contacter le support technique.", "Consulter le manuel de l'appareil."];
+                    } else if (answers[1] === 'recurrent_oui') {
+                         return ["Contacter le support technique."];
+                    }else {
+                        return ["Redémarrer l'appareil.", "Consulter le manuel de l'appareil."];
+                    }
+                default:
+                    return ["Contacter le support technique."];
+            }
+        }
+    </script>
+</body>
+</html>
