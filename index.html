@@ -31,6 +31,12 @@
             background-color: #007bff;
             color: white;
         }
+        .model-card {
+            cursor: pointer; /* Indique que l'élément est cliquable */
+        }
+        .connection-image {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-gray-100 p-6">
@@ -41,15 +47,15 @@
             <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Étape 1: Sélectionnez le modèle de votre terminal</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="model-card" data-model="Move5000">
-                    <img src="https://github.com/Sanglante/Ingenico/blob/main/move5000.png?raw=true" alt="Ingenico Move 5000" class="terminal-image rounded-md cursor-pointer">
+                    <img src="https://github.com/Sanglante/Ingenico/blob/main/move5000.png?raw=true" alt="Ingenico Move 5000" class="terminal-image rounded-md">
                     <p class="text-center mt-2 text-gray-700">Ingenico Move 5000</p>
                 </div>
                 <div class="model-card" data-model="Desk5000">
-                    <img src="https://github.com/Sanglante/Ingenico/blob/main/desk5000.png?raw=true" alt="Ingenico Desk 5000" class="terminal-image rounded-md cursor-pointer">
+                    <img src="https://github.com/Sanglante/Ingenico/blob/main/desk5000.png?raw=true" alt="Ingenico Desk 5000" class="terminal-image rounded-md">
                     <p class="text-center mt-2 text-gray-700">Ingenico Desk 5000</p>
                 </div>
                 <div class="model-card" data-model="DX8000">
-                    <img src="https://github.com/Sanglante/Ingenico/blob/main/dx8000.png?raw=true" alt="Ingenico DX8000" class="terminal-image rounded-md cursor-pointer">
+                    <img src="https://github.com/Sanglante/Ingenico/blob/main/dx8000.png?raw=true" alt="Ingenico DX8000" class="terminal-image rounded-md">
                     <p class="text-center mt-2 text-gray-700">Ingenico DX8000</p>
                 </div>
             </div>
@@ -176,9 +182,9 @@
                     { text: "La connexion WiFi est-elle stable ?", type: "radio", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }, { text: "Parfois", value: "parfois" }] }
                 ],
                 'RS232': [
-                  { text: "Le câble RS232 est-il correctement branché au terminal et à l'équipement ?", type: "boolean", options: [{ text: "Oui", value": "oui" }, { text: "Non", value": "non" }] },
-                  { text: "Les paramètres de communication (baud rate, parité, etc.) sont-ils correctement configurés ?", type: "boolean", options: [{ text: "Oui", value": "oui" }, { text: "Non", value": "non" }] },
-                  { text: "L'équipement connecté est-il correctement configuré pour communiquer avec le terminal ?", type: "boolean", options: [{ text: "Oui", value": "oui" }, { text: "Non", value": "non" }] },
+                  { text: "Le câble RS232 est-il correctement branché au terminal et à l'équipement ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                  { text: "Les paramètres de communication (baud rate, parité, etc.) sont-ils correctement configurés ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                  { text: "L'équipement connecté est-il correctement configuré pour communiquer avec le terminal ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
                 ]
             }
         };
