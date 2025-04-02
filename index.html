@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnostic Terminal de Paiement Ingenico</title>
+    <title>Diagnostic Terminal de Paiement</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,661 +12,631 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        .image-selection-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 1rem;
+        .active-image {
+            border: 4px solid #007bff; /* Bordure pour l'image active */
+            box-shadow: 0 0 5px #007bff; /* Ombre pour l'image active */
         }
-        .image-selection-grid img {
-            border: 2px solid transparent;
-            border-radius: 0.5rem;
+        .symptom-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px;
             cursor: pointer;
-            transition: border-color 0.3s ease;
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-        .image-selection-grid img:hover {
-            border-color: #6b7280;
-        }
-        .symptom-list {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 1rem;
-        }
-        .symptom-list li {
-            cursor: pointer;
-            padding: 0.5rem;
-            border-bottom: 1px solid #e5e7eb;
+            border-radius: 5px;
             transition: background-color 0.3s ease;
         }
-        .symptom-list li:hover {
-            background-color: #f9fafb;
-        }
-        .question-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        .question-options button, .question-options a {
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            border: 1px solid #d1d5db;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            background-color: white;
-            color: #374151;
-            text-decoration: none;
-        }
-        .question-options button:hover, .question-options a:hover {
+        .symptom-box:hover {
             background-color: #f0f0f0;
         }
-        .question-options button.selected, .question-options a.selected {
-            background-color: #3b82f6;
+        .active-symptom {
+            background-color: #007bff;
             color: white;
-            border-color: #2563eb;
-        }
-        #solutions-section {
-            margin-top: 2rem;
-            padding: 1rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            background-color: #f9fafb;
-        }
-        .hidden {
-            display: none;
-        }
-        #reset-button {
-            margin-top: 2rem;
-        }
-        /* Ajout de styles pour assurer le défilement */
-        body {
-            min-height: 100vh; /* Assure que le body a au moins la hauteur de l'écran */
-            display: flex; /* Active le modèle de boîte flexible */
-            flex-direction: column; /* Définit la direction de la flexbox sur colonne */
-        }
-        .main-content {
-            flex-grow: 1; /* Permet à la section principale de s'étendre pour remplir l'espace disponible */
-        }
-        footer {
-            flex-shrink: 0; /* Empêche le pied de page de rétrécir */
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <div class="main-content flex items-start justify-center py-8">
-        <div class="max-w-3xl w-full px-4 bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Diagnostic Terminal de Paiement Ingenico</h1>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto bg-white rounded-lg shadow-md p-8">
+        <h1 class="text-2xl font-semibold text-blue-600 text-center mb-6">Diagnostic et Résolution de Pannes de Terminaux de Paiement</h1>
 
-            <div id="model-selection" class="space-y-4">
-                <h2 class="text-lg font-semibold text-gray-700">Étape 1: Sélectionnez le modèle de votre terminal</h2>
-                <div class="image-selection-grid">
-                    <img src="https://github.com/Sanglante/Ingenico/blob/main/move5000.png?raw=true" alt="Ingenico Move 5000" data-model="Move5000">
-                    <img src="https://github.com/Sanglante/Ingenico/blob/main/desk5000.png?raw=true" alt="Ingenico Desk 5000" data-model="Desk5000">
-                    <img src="https://github.com/Sanglante/Ingenico/blob/main/dx8000.png?raw=true" alt="Ingenico DX8000" data-model="DX8000">
+        <div id="model-selection" class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Étape 1: Sélectionnez le modèle de votre terminal</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="model-card" data-model="Move5000">
+                    <img src="https://github.com/Sanglante/Ingenico/blob/main/move5000.png?raw=true" alt="Ingenico Move 5000" class="terminal-image rounded-md cursor-pointer">
+                    <p class="text-center mt-2 text-gray-700">Ingenico Move 5000</p>
+                </div>
+                <div class="model-card" data-model="Desk5000">
+                    <img src="https://github.com/Sanglante/Ingenico/blob/main/desk5000.png?raw=true" alt="Ingenico Desk 5000" class="terminal-image rounded-md cursor-pointer">
+                    <p class="text-center mt-2 text-gray-700">Ingenico Desk 5000</p>
+                </div>
+                <div class="model-card" data-model="DX8000">
+                    <img src="https://github.com/Sanglante/Ingenico/blob/main/dx8000.png?raw=true" alt="Ingenico DX8000" class="terminal-image rounded-md cursor-pointer">
+                    <p class="text-center mt-2 text-gray-700">Ingenico DX8000</p>
                 </div>
             </div>
+        </div>
 
-            <div id="connection-selection" class="space-y-4 hidden">
-                <h2 class="text-lg font-semibold text-gray-700">Étape 2: Sélectionnez le type de connexion</h2>
-                <div class="image-selection-grid">
-                    <img src="https://placehold.co/200x150/EEE/31343C?text=Ethernet&font=Montserrat" alt="Connexion Ethernet" data-connection="ethernet">
-                    <img src="https://placehold.co/200x150/EEE/31343C?text=Wifi&font=Montserrat" alt="Connexion Wifi" data-connection="wifi">
+        <div id="connection-selection" class="mb-6" style="display: none;">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Étape 2: Sélectionnez le type de connexion</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="connection-images">
                 </div>
-            </div>
+        </div>
 
-            <div id="symptom-selection" class="space-y-4 hidden">
-                <h2 class="text-lg font-semibold text-gray-700">Étape 3: Sélectionnez le symptôme principal</h2>
-                <ul class="symptom-list">
-                    <li data-symptom="ecran-noir">Écran noir ou illisible</li>
-                    <li data-symptom="clavier-hs">Clavier ne fonctionne pas ou mal</li>
-                    <li data-symptom="capot-casse">Capot cassé ou endommagé</li>
-                    <li data-symptom="papier-blanc">Le ticket sort blanc</li>
-                    <li data-symptom="carte-refusee">Refuse toutes les cartes</li>
-                    <li data-symptom="transaction-echec">Transaction échoue / Argent non transmis</li>
-                    <li data-symptom="code-erreur">Code erreur affiché sur le ticket</li>
+        <div id="symptom-selection" class="mb-6" style="display: none;">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Étape 3: Sélectionnez le symptôme de la panne</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="symptom-list">
+                 <div class="symptom-box" data-symptom="ecran_noir">Écran noir</div>
+                <div class="symptom-box" data-symptom="clavier_defaillant">Clavier défaillant</div>
+                <div class="symptom-box" data-symptom="capot_casse">Capot cassé</div>
+                <div class="symptom-box" data-symptom="papier_blanc">Le papier sort blanc</div>
+                <div class="symptom-box" data-symptom="refus_cartes">Refuse toutes les cartes</div>
+                <div class="symptom-box" data-symptom="pas_transmission_argent">Ne transmet pas l'argent</div>
+                <div class="symptom-box" data-symptom="code_erreur_ticket">Code erreur sur le ticket</div>
+            </div>
+        </div>
+
+        <div id="question-area" class="mb-6" style="display: none;">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Diagnostic Approfondi</h2>
+            <div id="questions">
+                </div>
+        </div>
+
+        <div id="solution-area" style="display: none;">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Solutions Possibles</h2>
+            <ul id="solutions" class="list-disc list-inside">
                 </ul>
-            </div>
-
-            <div id="questions-section" class="space-y-4 hidden">
-                <h2 class="text-lg font-semibold text-gray-700">Étape 4: Questions de diagnostic</h2>
-                <div id="questions-container">
-                    </div>
-            </div>
-
-            <div id="solutions-section" class="hidden">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Solutions possibles</h2>
-                <ul id="solutions-list" class="list-disc list-inside space-y-2">
-                    </ul>
-            </div>
-
-            <button id="reset-button" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out hidden">
-                Réinitialiser le diagnostic
-            </button>
-
         </div>
     </div>
 
     <script>
         const modelSelection = document.getElementById('model-selection');
         const connectionSelection = document.getElementById('connection-selection');
+        const connectionImagesDiv = document.getElementById('connection-images');
         const symptomSelection = document.getElementById('symptom-selection');
-        const questionsSection = document.getElementById('questions-section');
-        const questionsContainer = document.getElementById('questions-container');
-        const solutionsSection = document.getElementById('solutions-section');
-        const solutionsList = document.getElementById('solutions-list');
-        const resetButton = document.getElementById('reset-button');
+        const questionArea = document.getElementById('question-area');
+        const questionsDiv = document.getElementById('questions');
+        const solutionArea = document.getElementById('solution-area');
+        const solutionsList = document.getElementById('solutions');
 
         let selectedModel = null;
         let selectedConnection = null;
         let selectedSymptom = null;
-        let currentQuestions = [];
 
-        // Data for questions and solutions (in French)
-        const questionsData = {
-            "Move5000": {
-                "ethernet": [
-                    {
-                        question: "Le terminal est-il correctement branché au secteur ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": {
-                                question: "Le câble Ethernet est-il bien connecté au terminal et à la box/routeur ?",
-                                type: "boolean",
-                                options: ["Oui", "Non"],
-                                answers: {
-                                    "Oui": { solutions: ["Vérifier la connexion réseau", "Redémarrer le terminal", "Contacter le support technique"] },
-                                    "Non": { solutions: ["Brancher correctement le câble Ethernet", "Tester avec un autre câble Ethernet"] }
-                                }
-                            },
-                            "Non": { solutions: ["Brancher le terminal à une prise de courant fonctionnelle"] }
-                        }
-                    },
-                    {
-                        question: "L'écran affiche-t-il un message d'erreur ?",
-                        type: "text",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": {
-                                question: "Quel est le message d'erreur exact ?",
-                                type: "text-input",
-                                answers: {
-                                    "default": { solutions: ["Noter le message d'erreur et contacter le support technique", "Consulter la documentation du terminal"] }
-                                }
-                            },
-                            "Non": { solutions: ["Redémarrer le terminal", "Vérifier l'alimentation électrique"] }
-                        }
-                    }
+        const modelImages = {
+            'Move5000': [
+                { type: 'GPRS', url: 'https://placehold.co/100x80/CCC/FFF?text=GPRS&font=Roboto' },
+                { type: 'WiFi', url: 'https://placehold.co/100x80/CCC/FFF?text=WiFi&font=Roboto' },
+                { type: 'Ethernet', url: 'https://placehold.co/100x80/CCC/FFF?text=Ethernet&font=Roboto' }
+            ],
+            'Desk5000': [
+                { type: 'Ethernet', url: 'https://placehold.co/100x80/CCC/FFF?text=Ethernet&font=Roboto' },
+                { type: 'RTC', url: 'https://placehold.co/100x80/CCC/FFF?text=RTC&font=Roboto' },
+                { type: 'USB', url: 'https://placehold.co/100x80/CCC/FFF?text=USB&font=Roboto' }
+            ],
+            'DX8000': [
+                { type: 'Ethernet', url: 'https://placehold.co/100x80/CCC/FFF?text=Ethernet&font=Roboto' },
+                { type: 'WiFi', url: 'https://placehold.co/100x80/CCC/FFF?text=WiFi&font=Roboto' },
+                { type: 'RS232', url: 'https://placehold.co/100x80/CCC/FFF?text=RS232&font=Roboto' }
+            ]
+        };
+
+        const symptoms = [
+            { code: 'ecran_noir', text: 'Écran noir' },
+            { code: 'clavier_defaillant', text: 'Clavier défaillant' },
+            { code: 'capot_casse', text: 'Capot cassé' },
+            { code: 'papier_blanc', text: 'Le papier sort blanc' },
+            { code: 'refus_cartes', text: 'Refuse toutes les cartes' },
+            { code: 'pas_transmission_argent', text: 'Ne transmet pas l\'argent' },
+            { code: 'code_erreur_ticket', text: 'Code erreur sur le ticket' }
+        ];
+
+        const questions = {
+            'Move5000': {
+                'GPRS': [
+                    { text: "Le terminal s'allume-t-il ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] },
+                    { text: "La carte SIM est-elle correctement insérée ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] },
+                    { text: "Le terminal affiche-t-il un message d'erreur lié au réseau ?", type: 'text', options: [] }
                 ],
-                "wifi": [
-                  {
-                    question: "Le Wi-Fi est-il activé sur le terminal ?",
-                    type: "boolean",
-                    options: ["Oui", "Non"],
-                    answers: {
-                        "Oui": {
-                            question: "Le terminal est-il connecté au bon réseau Wi-Fi ?",
-                            type: "boolean",
-                            options: ["Oui", "Non"],
-                            answers: {
-                                "Oui": { solutions: ["Vérifier la qualité du signal Wi-Fi", "Redémarrer le terminal", "Contacter le support technique"] },
-                                "Non": { solutions: ["Connecter le terminal au bon réseau Wi-Fi", "Entrer le mot de passe Wi-Fi correctement"] }
-                            }
-                        },
-                        "Non": { solutions: ["Activer le Wi-Fi dans les paramètres du terminal"] }
-                    }
-                },
-                {
-                    question: "Le terminal demande-t-il un mot de passe Wi-Fi ?",
-                    type: "boolean",
-                    options: ["Oui", "Non"],
-                    answers: {
-                        "Oui": { solutions: ["Entrer le mot de passe Wi-Fi correctement"] },
-                        "Non": { solutions: ["Vérifier les paramètres de sécurité du réseau Wi-Fi", "Redémarrer le terminal"] }
-                    }
-                }
+                'WiFi': [
+                  { text: "Le terminal est-il connecté au bon réseau WiFi ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                  { text: "Le mot de passe WiFi a-t-il été correctement saisi ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                  { text: "Le signal WiFi est-il suffisamment fort ?", type: "radio", options: [{ text: "Fort", value: "fort" }, { text: "Moyen", value: "moyen" }, { text: "Faible", value: "faible" }] },
+                ],
+                'Ethernet': [
+                    { text: "Le câble Ethernet est-il correctement branché ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] },
+                    { text: "Le terminal obtient-il une adresse IP ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] },
+                    { text: "La connexion Ethernet fonctionne-t-elle avec un autre appareil ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] }
                 ]
             },
-            "Desk5000": {
-                "ethernet": [
-                  {
-                    question: "Le terminal est-il correctement branché au secteur ?",
-                    type: "boolean",
-                    options: ["Oui", "Non"],
-                    answers: {
-                        "Oui": {
-                            question: "Le câble Ethernet est-il bien connecté au terminal et à la box/routeur ?",
-                            type: "boolean",
-                            options: ["Oui", "Non"],
-                            answers: {
-                                "Oui": { solutions: ["Vérifier la connexion réseau", "Redémarrer le terminal", "Contacter le support technique"] },
-                                "Non": { solutions: ["Brancher correctement le câble Ethernet", "Tester avec un autre câble Ethernet"] }
-                            }
-                        },
-                        "Non": { solutions: ["Brancher le terminal à une prise de courant fonctionnelle"] }
-                    }
-                },
-                {
-                    question: "La connexion internet fonctionne-t-elle sur d'autres appareils ?",
-                    type: "boolean",
-                    options: ["Oui", "Non"],
-                    answers: {
-                        "Oui": { solutions: ["Redémarrer le terminal", "Vérifier les paramètres réseau du terminal"] },
-                        "Non": { solutions: ["Redémarrer la box/routeur", "Contacter votre fournisseur d'accès internet"] }
-                    }
-                }
+            'Desk5000': {
+                'Ethernet': [
+                  { text: "Le câble Ethernet est-il correctement branché au terminal et à la box ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                  { text: "Les voyants de connexion du terminal et de la box sont-ils allumés ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                  { text: "Avez-vous testé avec un autre câble Ethernet ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
                 ],
-                "wifi": [
-                    {
-                        question: "Le terminal est-il alimenté ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": {
-                                question: "Le Wi-Fi est-il activé sur le terminal ?",
-                                type: "boolean",
-                                options: ["Oui", "Non"],
-                                answers: {
-                                    "Oui": { solutions: ["Vérifier la connexion au réseau Wi-Fi", "Redémarrer le terminal"] },
-                                    "Non": { solutions: ["Activer le Wi-Fi dans les paramètres du terminal"] }
-                                }
-                            },
-                            "Non": { solutions: ["Vérifier le branchement de l'alimentation", "Tester avec une autre prise de courant"] }
-                        }
-                    },
-                    {
-                        question: "Le terminal détecte-t-il les réseaux Wi-Fi disponibles ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Sélectionner le bon réseau Wi-Fi et entrer le mot de passe"] },
-                            "Non": { solutions: ["Rapprocher le terminal du routeur Wi-Fi", "Redémarrer le routeur Wi-Fi"] }
-                        }
-                    }
+                'RTC': [
+                    { text: "Le câble téléphonique est-il correctement branché ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] },
+                    { text: "La ligne téléphonique fonctionne-t-elle ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] },
+                    { text: "Le terminal compose-t-il le numéro de connexion ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] }
+                ],
+                'USB': [
+                    { text: "Le câble USB est-il correctement branché à l'ordinateur ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] },
+                    { text: "Le terminal est-il reconnu par l'ordinateur ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] },
+                    { text: "Les pilotes USB sont-ils correctement installés ?", type: 'boolean', options: [{ text: 'Oui', value: 'oui' }, { text: 'Non', value: 'non' }] }
                 ]
             },
-            "DX8000": {
-                "ethernet": [
-                  {
-                    question: "Le terminal est-il correctement branché au secteur ?",
-                    type: "boolean",
-                    options: ["Oui", "Non"],
-                    answers: {
-                        "Oui": {
-                            question: "Le câble Ethernet est-il bien connecté au terminal et à la box/routeur ?",
-                            type: "boolean",
-                            options: ["Oui", "Non"],
-                            answers: {
-                                "Oui": { solutions: ["Vérifier la connexion réseau", "Redémarrer le terminal", "Contacter le support technique"] },
-                                "Non": { solutions: ["Brancher correctement le câble Ethernet", "Tester avec un autre câble Ethernet"] }
-                            }
-                        },
-                        "Non": { solutions: ["Brancher le terminal à une prise de courant fonctionnelle"] }
-                    }
-                },
-                {
-                    question: "Le terminal communique-t-il avec le système de caisse ?",
-                    type: "boolean",
-                    options: ["Oui", "Non"],
-                    answers: {
-                        "Oui": { solutions: ["Vérifier les paramètres de communication", "Redémarrer le système de caisse"] },
-                        "Non": { solutions: ["Vérifier le branchement du câble Ethernet", "Tester la connexion réseau"] }
-                    }
-                }
+            'DX8000': {
+                'Ethernet': [
+                    { text: "Le terminal est-il connecté au réseau local ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                    { text: "L'adresse IP du terminal est-elle correctement configurée ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                    { text: "Le pare-feu autorise-t-il la communication avec le terminal ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
                 ],
-                "wifi": [
-                    {
-                        question: "Le terminal est-il sous tension ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": {
-                                question: "Le terminal est-il connecté au réseau Wi-Fi ?",
-                                type: "boolean",
-                                options: ["Oui", "Non"],
-                                answers: {
-                                    "Oui": { solutions: ["Vérifier la force du signal Wi-Fi", "Redémarrer le terminal"] },
-                                    "Non": { solutions: ["Sélectionner le bon réseau Wi-Fi", "Entrer le mot de passe Wi-Fi"] }
-                                }
-                            },
-                            "Non": { solutions: ["Vérifier l'alimentation électrique du terminal"] }
-                        }
-                    },
-                    {
-                        question: "Le terminal affiche-t-il un message d'erreur lié au Wi-Fi ?",
-                        type: "text",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": {
-                                question: "Quel est le message d'erreur ?",
-                                type: "text-input",
-                                answers: {
-                                    "default": { solutions: ["Noter le message d'erreur et contacter le support technique", "Consulter la documentation du terminal"] }
-                                }
-                            },
-                            "Non": { solutions: ["Redémarrer le terminal et le routeur Wi-Fi", "Vérifier les paramètres Wi-Fi"] }
-                        }
-                    }
+                'WiFi': [
+                    { text: "Le terminal détecte-t-il les réseaux WiFi disponibles ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                    { text: "Le terminal se connecte-t-il au réseau WiFi sélectionné ?", type: "boolean", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }] },
+                    { text: "La connexion WiFi est-elle stable ?", type: "radio", options: [{ text: "Oui", value: "oui" }, { text: "Non", value: "non" }, { text: "Parfois", value: "parfois" }] }
+                ],
+                'RS232': [
+                  { text: "Le câble RS232 est-il correctement branché au terminal et à l'équipement ?", type: "boolean", options: [{ text: "Oui", value": "oui" }, { text: "Non", value": "non" }] },
+                  { text: "Les paramètres de communication (baud rate, parité, etc.) sont-ils correctement configurés ?", type: "boolean", options: [{ text: "Oui", value": "oui" }, { text: "Non", value": "non" }] },
+                  { text: "L'équipement connecté est-il correctement configuré pour communiquer avec le terminal ?", type: "boolean", options: [{ text: "Oui", value": "oui" }, { text: "Non", value": "non" }] },
                 ]
             }
         };
 
-        const symptomQuestions = {
-            "ecran-noir": {
-                questions: [
-                    {
-                        question: "L'écran est-il complètement noir ou faiblement éclairé ?",
-                        type: "boolean",
-                        options: ["Noir", "Faiblement éclairé"],
-                        answers: {
-                            "Noir": { solutions: ["Vérifier l'alimentation électrique", "Contacter le support technique"] },
-                            "Faiblement éclairé": { solutions: ["Ajuster les paramètres de luminosité", "Contacter le support technique"] }
-                        }
-                    },
-                    {
-                        question: "Le terminal émet-il des bips ou des sons ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Noter les bips et contacter le support technique"] },
-                            "Non": { solutions: ["Vérifier l'alimentation électrique", "Contacter le support technique"] }
-                        }
-                    }
-                ],
-                title: "Problème d'écran"
+        const solutions = {
+            'Move5000': {
+                'GPRS': {
+                    'ecran_noir': [
+                        "Vérifiez l'alimentation du terminal.",
+                        "Essayez de redémarrer le terminal.",
+                        "Vérifiez la batterie et chargez-la si nécessaire.",
+                        "Contactez le support technique."
+                    ],
+                    'clavier_defaillant': [
+                        "Nettoyez le clavier du terminal.",
+                        "Vérifiez si des touches sont bloquées.",
+                        "Contactez le support technique pour un remplacement du clavier."
+                    ],
+                    'capot_casse': [
+                        "Contactez le support technique pour commander un nouveau capot.",
+                        "Utilisez le terminal avec précaution en attendant la réparation."
+                    ],
+                     'papier_blanc': [
+                        "Vérifiez si le rouleau de papier est correctement inséré.",
+                        "Remplacez le rouleau de papier.",
+                        "Nettoyez la tête d'impression.",
+                    ],
+                    'refus_cartes': [
+                        "Vérifiez la date de validité de la carte.",
+                        "Demandez au client d'essayer avec une autre carte.",
+                        "Vérifiez si le terminal est correctement configuré pour accepter ce type de carte.",
+                        "Vérifiez la connexion réseau du terminal.",
+                    ],
+                    'pas_transmission_argent': [
+                        "Vérifiez la connexion réseau du terminal.",
+                        "Vérifiez la configuration du terminal avec votre banque.",
+                        "Contactez le support technique de votre banque.",
+                    ],
+                    'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal pour la signification du code d'erreur.",
+                        "Contactez le support technique."
+                    ]
+                },
+                'WiFi': {
+                    'ecran_noir': [
+                      "Vérifiez l'alimentation du terminal.",
+                      "Redémarrez le terminal.",
+                      "Vérifiez l'état de la batterie.",
+                      "Contactez le support technique."
+                    ],
+                    'clavier_defaillant': [
+                      "Nettoyez le clavier.",
+                      "Vérifiez si des touches sont bloquées.",
+                      "Contactez le support technique."
+                    ],
+                    'capot_casse': [
+                      "Contactez le support technique pour un remplacement.",
+                      "Utilisez le terminal avec précaution."
+                    ],
+                    'papier_blanc': [
+                        "Vérifiez l'insertion du papier.",
+                        "Remplacez le rouleau de papier.",
+                        "Nettoyez la tête d'impression."
+                    ],
+                    'refus_cartes': [
+                        "Vérifiez la validité de la carte.",
+                        "Essayez une autre carte.",
+                        "Vérifiez la configuration du terminal.",
+                        "Vérifiez la connexion WiFi."
+                    ],
+                    'pas_transmission_argent': [
+                        "Vérifiez la connexion WiFi.",
+                        "Vérifiez la configuration bancaire.",
+                        "Contactez le support technique de la banque."
+                    ],
+                    'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal.",
+                        "Contactez le support technique."
+                    ]
+                },
+                'Ethernet': {
+                    'ecran_noir': [
+                        "Vérifiez l'alimentation du terminal.",
+                        "Redémarrez le terminal.",
+                        "Vérifiez la batterie.",
+                        "Contactez le support technique."
+                    ],
+                    'clavier_defaillant': [
+                        "Nettoyez le clavier.",
+                        "Vérifiez les touches bloquées.",
+                         "Contactez le support technique."
+                    ],
+                    'capot_casse': [
+                        "Contactez le support technique pour un remplacement.",
+                        "Utilisez le terminal avec précaution."
+                    ],
+                    'papier_blanc': [
+                      "Vérifiez le chargement du papier.",
+                      "Remplacez le rouleau de papier.",
+                      "Nettoyez la tête d'impression."
+                    ],
+                    'refus_cartes': [
+                        "Vérifiez la validité de la carte.",
+                        "Essayez une autre carte.",
+                        "Vérifiez la configuration du terminal.",
+                        "Vérifiez la connexion Ethernet."
+                    ],
+                    'pas_transmission_argent': [
+                        "Vérifiez la connexion Ethernet.",
+                        "Vérifiez la configuration bancaire.",
+                        "Contactez le support technique de la banque."
+                    ],
+                    'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal.",
+                        "Contactez le support technique."
+                    ]
+                }
             },
-            "clavier-hs": {
-                questions: [
-                    {
-                        question: "Toutes les touches sont-elles affectées ou seulement certaines ?",
-                        type: "text",
-                        options: ["Toutes", "Certaines"],
-                        answers: {
-                            "Toutes": { solutions: ["Redémarrer le terminal", "Contacter le support technique"] },
-                            "Certaines": { solutions: ["Nettoyer les touches affectées", "Contacter le support technique"] }
-                        }
-                    },
-                    {
-                         question: "Les touches sont-elles bloquées ou dures à enfoncer ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Nettoyer le clavier", "Contacter le support technique"] },
-                            "Non": { solutions: [ "Contacter le support technique"] }
-                        }
-                    }
-                ],
-                title: "Problème de clavier"
+            'Desk5000': {
+                'Ethernet': {
+                    'ecran_noir': [
+                        "Vérifiez le branchement de l'alimentation.",
+                        "Testez avec un autre câble d'alimentation.",
+                        "Redémarrez le terminal.",
+                        "Contactez le support technique."
+                    ],
+                    'clavier_defaillant': [
+                        "Nettoyez le clavier.",
+                        "Vérifiez si des touches sont bloquées.",
+                        "Contactez le support technique pour un remplacement."
+                    ],
+                    'capot_casse': [
+                       "Contactez le support technique pour commander un nouveau capot.",
+                        "Utilisez le terminal avec précaution en attendant la réparation."
+                    ],
+                    'papier_blanc': [
+                        "Vérifiez l'insertion du papier.",
+                        "Remplacez le rouleau de papier.",
+                        "Nettoyez la tête d'impression."
+                    ],
+                    'refus_cartes': [
+                        "Vérifiez la validité de la carte.",
+                        "Essayez une autre carte.",
+                        "Vérifiez la configuration du terminal.",
+                        "Vérifiez la connexion Ethernet."
+                    ],
+                    'pas_transmission_argent': [
+                        "Vérifiez la connexion Ethernet.",
+                        "Vérifiez la configuration bancaire.",
+                        "Contactez le support technique de la banque."
+                    ],
+                    'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal.",
+                        "Contactez le support technique."
+                    ]
+                },
+                'RTC': {
+                    'ecran_noir': [
+                       "Vérifiez le branchement de l'alimentation.",
+                        "Testez avec un autre câble d'alimentation.",
+                        "Redémarrez le terminal.",
+                        "Contactez le support technique."
+                    ],
+                    'clavier_defaillant': [
+                        "Nettoyez le clavier.",
+                        "Vérifiez si des touches sont bloquées.",
+                        "Contactez le support technique pour un remplacement."
+                    ],
+                    'capot_casse': [
+                        "Contactez le support technique pour commander un nouveau capot.",
+                        "Utilisez le terminal avec précaution en attendant la réparation."
+                    ],
+                    'papier_blanc': [
+                        "Vérifiez l'insertion du papier.",
+                        "Remplacez le rouleau de papier.",
+                        "Nettoyez la tête d'impression."
+                    ],
+                    'refus_cartes': [
+                        "Vérifiez la validité de la carte.",
+                        "Essayez une autre carte.",
+                        "Vérifiez la configuration du terminal.",
+                        "Vérifiez la connexion RTC."
+                    ],
+                    'pas_transmission_argent': [
+                        "Vérifiez la connexion RTC.",
+                        "Vérifiez la configuration bancaire.",
+                        "Contactez le support technique de la banque."
+                    ],
+                    'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal.",
+                        "Contactez le support technique."
+                    ]
+                },
+                'USB': {
+                    'ecran_noir': [
+                       "Vérifiez le branchement de l'alimentation.",
+                        "Testez avec un autre câble d'alimentation.",
+                        "Redémarrez le terminal.",
+                        "Contactez le support technique."
+                    ],
+                    'clavier_defaillant': [
+                        "Nettoyez le clavier.",
+                        "Vérifiez si des touches sont bloquées.",
+                        "Contactez le support technique pour un remplacement."
+                    ],
+                    'capot_casse': [
+                        "Contactez le support technique pour commander un nouveau capot.",
+                        "Utilisez le terminal avec précaution en attendant la réparation."
+                    ],
+                    'papier_blanc': [
+                        "Vérifiez l'insertion du papier.",
+                        "Remplacez le rouleau de papier.",
+                        "Nettoyez la tête d'impression."
+                    ],
+                    'refus_cartes': [
+                         "Vérifiez la validité de la carte.",
+                        "Essayez une autre carte.",
+                        "Vérifiez la configuration du terminal.",
+                        "Vérifiez la connexion USB."
+                    ],
+                    'pas_transmission_argent': [
+                        "Vérifiez la connexion USB.",
+                        "Vérifiez la configuration bancaire.",
+                        "Contactez le support technique de la banque."
+                    ],
+                    'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal.",
+                        "Contactez le support technique."
+                    ]
+                }
             },
-            "capot-casse": {
-                questions: [
-                    {
-                        question: "Le capot est-il fissuré ou cassé ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Ne pas utiliser le terminal", "Contacter le support technique pour remplacement"] },
-                            "Non": { solutions: ["Vérifier si d'autres parties sont endommagées"] }
-                        }
-                    },
-                    {
-                        question: "Le capot tient-il toujours en place ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Utiliser le terminal avec précaution", "Contacter le support technique pour réparation"] },
-                            "Non": { solutions: ["Ne pas utiliser le terminal", "Contacter le support technique pour remplacement"] }
-                        }
-                    }
-                ],
-                title: "Problème de capot"
-            },
-            "papier-blanc": {
-                questions: [
-                    {
-                        question: "Le rouleau de papier est-il correctement installé ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Vérifier l'imprimante du terminal", "Contacter le support technique"] },
-                            "Non": { solutions: ["Installer correctement le rouleau de papier"] }
-                        }
-                    },
-                    {
-                        question: "L'imprimante du terminal fait-elle du bruit ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Contacter le support technique pour problème d'imprimante"] },
-                            "Non": { solutions: ["Vérifier l'alimentation de l'imprimante", "Contacter le support technique"] }
-                        }
-                    }
-                ],
-                title: "Problème d'impression"
-            },
-            "carte-refusee": {
-                questions: [
-                    {
-                        question: "Le problème se produit-il avec toutes les cartes ou seulement certaines ?",
-                        type: "text",
-                        options: ["Toutes", "Certaines"],
-                        answers: {
-                            "Toutes": { solutions: ["Vérifier la connexion du terminal", "Contacter le support technique"] },
-                            "Certaines": { solutions: ["Demander au client d'essayer avec une autre carte", "Vérifier le lecteur de carte"] }
-                        }
-                    },
-                    {
-                        question: "Avez-vous essayé plusieurs types de cartes (crédit, débit) ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Contacter le support technique"] },
-                            "Non": { solutions: ["Tester avec différents types de cartes"] }
-                        }
-                    }
-                ],
-                title: "Problème de lecture de carte"
-            },
-            "transaction-echec": {
-                questions: [
-                    {
-                        question: "Le problème se produit-il avec toutes les transactions ou seulement certaines ?",
-                        type: "text",
-                        options: ["Toutes", "Certaines"],
-                        answers: {
-                            "Toutes": { solutions: ["Vérifier la connexion du terminal", "Contacter le support technique"] },
-                            "Certaines": { solutions: ["Demander au client de réessayer", "Vérifier le montant de la transaction"] }
-                        }
-                    },
-                    {
-                        question: "Un message d'erreur s'affiche-t-il lors de la transaction ?",
-                        type: "boolean",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Noter le message d'erreur et contacter le support technique"] },
-                            "Non": { solutions: ["Vérifier la connexion du terminal", "Redémarrer le terminal"] }
-                        }
-                    }
-                ],
-                title: "Problème de transaction"
-            },
-            "code-erreur": {
-                questions: [
-                    {
-                        question: "Quel est le code d'erreur affiché ?",
-                        type: "text-input",
-                        answers: {
-                            "default": { solutions: ["Consulter la documentation du terminal pour le code d'erreur", "Contacter le support technique"] }
-                        }
-                    },
-                    {
-                        question: "Le code d'erreur est-il apparu après une action spécifique ?",
-                        type: "text",
-                        options: ["Oui", "Non"],
-                        answers: {
-                            "Oui": { solutions: ["Noter l'action et le code d'erreur", "Contacter le support technique"] },
-                            "Non": { solutions: ["Redémarrer le terminal", "Contacter le support technique"] }
-                        }
-                    }
-                ],
-                title: "Problème de code erreur"
+            'DX8000': {
+                'Ethernet': {
+                    'ecran_noir': [
+                        "Vérifiez l'alimentation du terminal.",
+                        "Redémarrez le terminal.",
+                        "Vérifiez les branchements du câble Ethernet.",
+                        "Contactez le support technique."
+                      ],
+                      'clavier_defaillant': [
+                        "Nettoyez le clavier du terminal.",
+                        "Vérifiez si des touches sont bloquées.",
+                        "Contactez le support technique pour un remplacement du clavier."
+                      ],
+                      'capot_casse': [
+                        "Contactez le support technique pour commander un nouveau capot.",
+                        "Utilisez le terminal avec précaution en attendant la réparation."
+                      ],
+                      'papier_blanc': [
+                        "Vérifiez si le rouleau de papier estcorrectement inséré.",
+                        "Remplacez le rouleau de papier.",
+                        "Nettoyez la tête d'impression."
+                      ],
+                      'refus_cartes': [
+                        "Vérifiez la date de validité de la carte.",
+                        "Demandez au client d'essayer avec une autre carte.",
+                        "Vérifiez si le terminal est correctement configuré pour accepter ce type de carte.",
+                        "Vérifiez la connexion réseau du terminal."
+                      ],
+                      'pas_transmission_argent': [
+                        "Vérifiez la connexion réseau du terminal.",
+                        "Vérifiez la configuration du terminal avec votre banque.",
+                        "Contactez le support technique de votre banque."
+                      ],
+                      'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal pour la signification du code d'erreur.",
+                        "Contactez le support technique."
+                      ]
+                },
+                'WiFi': {
+                    'ecran_noir': [
+                        "Vérifiez l'alimentation du terminal.",
+                        "Redémarrez le terminal.",
+                        "Vérifiez la connexion WiFi.",
+                        "Contactez le support technique."
+                      ],
+                      'clavier_defaillant': [
+                        "Nettoyez le clavier du terminal.",
+                        "Vérifiez si des touches sont bloquées.",
+                        "Contactez le support technique pour un remplacement du clavier."
+                      ],
+                      'capot_casse': [
+                        "Contactez le support technique pour commander un nouveau capot.",
+                        "Utilisez le terminal avec précaution en attendant la réparation."
+                      ],
+                      'papier_blanc': [
+                        "Vérifiez si le rouleau de papier est correctement inséré.",
+                        "Remplacez le rouleau de papier.",
+                        "Nettoyez la tête d'impression."
+                      ],
+                      'refus_cartes': [
+                        "Vérifiez la date de validité de la carte.",
+                        "Demandez au client d'essayer avec une autre carte.",
+                        "Vérifiez si le terminal est correctement configuré pour accepter ce type de carte.",
+                        "Vérifiez la connexion réseau du terminal."
+                      ],
+                      'pas_transmission_argent': [
+                         "Vérifiez la connexion réseau du terminal.",
+                        "Vérifiez la configuration du terminal avec votre banque.",
+                        "Contactez le support technique de votre banque."
+                      ],
+                      'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal pour la signification du code d'erreur.",
+                        "Contactez le support technique."
+                      ]
+                },
+                'RS232': {
+                    'ecran_noir': [
+                        "Vérifiez l'alimentation du terminal.",
+                        "Redémarrez le terminal.",
+                        "Vérifiez les branchements du câble RS232.",
+                        "Contactez le support technique."
+                      ],
+                      'clavier_defaillant': [
+                        "Nettoyez le clavier du terminal.",
+                        "Vérifiez si des touches sont bloquées.",
+                        "Contactez le support technique pour un remplacement du clavier."
+                      ],
+                      'capot_casse': [
+                        "Contactez le support technique pour commander un nouveau capot.",
+                        "Utilisez le terminal avec précaution en attendant la réparation."
+                      ],
+                      'papier_blanc': [
+                        "Vérifiez si le rouleau de papier est correctement inséré.",
+                        "Remplacez le rouleau de papier.",
+                        "Nettoyez la tête d'impression."
+                      ],
+                      'refus_cartes': [
+                        "Vérifiez la date de validité de la carte.",
+                        "Demandez au client d'essayer avec une autre carte.",
+                        "Vérifiez si le terminal est correctement configuré pour accepter ce type de carte.",
+                        "Vérifiez la connexion réseau du terminal."
+                      ],
+                      'pas_transmission_argent': [
+                        "Vérifiez la connexion réseau du terminal.",
+                        "Vérifiez la configuration du terminal avec votre banque.",
+                        "Contactez le support technique de votre banque."
+                      ],
+                      'code_erreur_ticket': [
+                        "Notez le code d'erreur.",
+                        "Consultez le manuel du terminal pour la signification du code d'erreur.",
+                        "Contactez le support technique."
+                      ]
+                }
             }
         };
 
         modelSelection.addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.tagName === 'IMG') {
+            const target = event.target.closest('.model-card');
+            if (target) {
                 selectedModel = target.dataset.model;
+                document.querySelectorAll('.model-card').forEach(card => card.querySelector('img').classList.remove('active-image'));
+                target.querySelector('img').classList.add('active-image');
                 console.log('Modèle sélectionné:', selectedModel);
-                modelSelection.classList.add('hidden');
-                connectionSelection.classList.remove('hidden');
-                resetButton.classList.remove('hidden');
+                connectionSelection.style.display = 'block';
+                connectionImagesDiv.innerHTML = ''; // Efface les images précédentes
+                modelImages[selectedModel].forEach(connection => {
+                    const img = document.createElement('img');
+                    img.src = connection.url;
+                    img.alt = connection.type;
+                    img.classList.add('connection-image', 'rounded-md', 'cursor-pointer');
+                    img.dataset.connection = connection.type;
+                    connectionImagesDiv.appendChild(img);
+                });
+                symptomSelection.style.display = 'none';
+                questionArea.style.display = 'none';
+                solutionArea.style.display = 'none';
+                selectedConnection = null;
+                selectedSymptom = null;
             }
         });
 
         connectionSelection.addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.tagName === 'IMG') {
+            const target = event.target.closest('.connection-image');
+            if (target) {
                 selectedConnection = target.dataset.connection;
+                document.querySelectorAll('.connection-image').forEach(img => img.classList.remove('active-image'));
+                target.classList.add('active-image');
                 console.log('Type de connexion sélectionné:', selectedConnection);
-                connectionSelection.classList.add('hidden');
-                symptomSelection.classList.remove('hidden');
+                symptomSelection.style.display = 'block';
+                questionArea.style.display = 'none';
+                solutionArea.style.display = 'none';
+                selectedSymptom = null;
             }
         });
 
         symptomSelection.addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.tagName === 'LI') {
+             const target = event.target.closest('.symptom-box');
+            if (target) {
                 selectedSymptom = target.dataset.symptom;
+                document.querySelectorAll('.symptom-box').forEach(box => box.classList.remove('active-symptom'));
+                target.classList.add('active-symptom');
                 console.log('Symptôme sélectionné:', selectedSymptom);
-                symptomSelection.classList.add('hidden');
-                questionsSection.classList.remove('hidden');
+                questionArea.style.display = 'block';
+                solutionArea.style.display = 'none';
+                questionsDiv.innerHTML = ''; // Efface les questions précédentes
+                const relevantQuestions = questions[selectedModel][selectedConnection];
 
-                // Charger les questions pour le symptôme sélectionné
-                loadQuestionsForSymptom(selectedSymptom);
-            }
-        });
+                if (relevantQuestions && relevantQuestions.length > 0) {
+                    relevantQuestions.forEach((question, index) => {
+                        const questionDiv = document.createElement('div');
+                        questionDiv.classList.add('mb-4', 'p-4', 'bg-gray-50', 'rounded-md', 'shadow-sm');
+                        questionDiv.innerHTML = `<h3 class="text-lg font-semibold text-gray-700 mb-2">${question.text}</h3>`;
 
-        function loadQuestionsForSymptom(symptom) {
-            questionsContainer.innerHTML = ''; // Clear previous questions
-            currentQuestions = symptomQuestions[symptom].questions;
-
-            if (!currentQuestions || currentQuestions.length === 0) {
-                displaySolutions(["Aucune question supplémentaire disponible pour ce symptôme."]);
-                return;
-            }
-
-            currentQuestions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.classList.add('mb-4');
-
-                questionDiv.innerHTML = `<h3 class="font-semibold text-gray-700 mb-2">${q.title ? q.title: 'Question ' + (index + 1)}: ${q.question}</h3>`;
-
-                if (q.type === 'boolean' || q.type === 'text') {
-                    const optionsDiv = document.createElement('div');
-                    optionsDiv.classList.add('question-options');
-                    q.options.forEach(option => {
-                        const button = document.createElement('button');
-                        button.textContent = option;
-                        button.dataset.option = option;
-                        button.addEventListener('click', () => handleAnswer(index, option));
-                        optionsDiv.appendChild(button);
-                    });
-                    questionDiv.appendChild(optionsDiv);
-                } else if (q.type === 'text-input') {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.classList.add('border', 'rounded-md', 'p-2', 'w-full');
-                    input.placeholder = "Entrez votre réponse ici";
-                    input.addEventListener('change', () => handleAnswer(index, input.value));
-                    questionDiv.appendChild(input);
-                }
-
-                questionsContainer.appendChild(questionDiv);
-            });
-        }
-
-        function handleAnswer(questionIndex, answer) {
-            const question = currentQuestions[questionIndex];
-             console.log(`Question ${questionIndex + 1}: Réponse sélectionnée: ${answer}`);
-
-            if (question.answers && question.answers[answer]) {
-                // If there's a nested question, load it
-                const nextQuestionData = question.answers[answer];
-
-                if(nextQuestionData.question){
-                    const nextQuestionDiv = document.createElement('div');
-                    nextQuestionDiv.classList.add('mb-4');
-                    nextQuestionDiv.innerHTML = `<h3 class="font-semibold text-gray-700 mb-2">Question ${currentQuestions.length + 1}: ${nextQuestionData.question}</h3>`;
-
-                    if (nextQuestionData.type === 'boolean' || nextQuestionData.type === 'text') {
-                        const optionsDiv = document.createElement('div');
-                        optionsDiv.classList.add('question-options');
-                        nextQuestionData.options.forEach(option => {
-                            const button = document.createElement('button');
-                            button.textContent = option;
-                            button.dataset.option = option;
-                            button.addEventListener('click', () => {
-                                handleAnswer(currentQuestions.length, option);
+                        if (question.type === 'boolean' || question.type === 'radio') {
+                            question.options.forEach(option => {
+                                const optionLabel = document.createElement('label');
+                                optionLabel.classList.add('inline-flex', 'items-center', 'mr-4');
+                                const optionInput = document.createElement('input');
+                                optionInput.type = question.type;
+                                optionInput.name = `question-${index}`;
+                                optionInput.value = option.value;
+                                optionInput.classList.add('mr-2');
+                                optionLabel.appendChild(optionInput);
+                                optionLabel.appendChild(document.createTextNode(option.text));
+                                questionDiv.appendChild(optionLabel);
                             });
-                            optionsDiv.appendChild(button);
-                        });
-                        nextQuestionDiv.appendChild(optionsDiv);
-                    } else if (nextQuestionData.type === 'text-input') {
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.classList.add('border', 'rounded-md', 'p-2', 'w-full');
-                        input.placeholder = "Entrez votre réponse ici";
-                         input.addEventListener('change', () => {
-                            handleAnswer(currentQuestions.length, input.value);
-                         });
-                        nextQuestionDiv.appendChild(input);
-                    }
-                    questionsContainer.appendChild(nextQuestionDiv);
-                    currentQuestions.push(nextQuestionData);
+                        } else if (question.type === 'text') {
+                            const textInput = document.createElement('input');
+                            textInput.type = 'text';
+                            textInput.classList.add('border', 'rounded-md', 'p-2', 'w-full');
+                            textInput.placeholder = "Entrez votre réponse";
+                            questionDiv.appendChild(textInput);
+                        }
+                        questionsDiv.appendChild(questionDiv);
+                    });
+                } else {
+                    questionsDiv.innerHTML = `<p class="text-gray-600">Aucune question supplémentaire pour ce symptôme.</p>`;
                 }
-                else{
-                     displaySolutions(nextQuestionData.solutions);
-                }
-
-            } else if (question.answers && question.answers['default']) {
-                  displaySolutions(question.answers['default'].solutions);
+                displaySolutions();
             }
-            else {
-                // If there are no further questions, display solutions
-                displaySolutions(question.solutions);
-            }
-        }
-
-        function displaySolutions(solutions) {
-            solutionsList.innerHTML = ''; // Clear previous solutions
-            solutions.forEach(solution => {
-                const li = document.createElement('li');
-                li.textContent = solution;
-                solutionsList.appendChild(li);
-            });
-            solutionsSection.classList.remove('hidden');
-        }
-
-        resetButton.addEventListener('click', () => {
-            selectedModel = null;
-            selectedConnection = null;
-            selectedSymptom = null;
-            currentQuestions = [];
-            questionsContainer.innerHTML = '';
-            solutionsList.innerHTML = '';
-
-            modelSelection.classList.remove('hidden');
-            connectionSelection.classList.add('hidden');
-            symptomSelection.classList.add('hidden');
-            questionsSection.classList.add('hidden');
-            solutionsSection.classList.add('hidden');
-            resetButton.classList.add('hidden');
         });
+
+        function displaySolutions() {
+            if (selectedModel && selectedConnection && selectedSymptom) {
+                solutionArea.style.display = 'block';
+                solutionsList.innerHTML = ''; // Efface les solutions précédentes
+                const relevantSolutions = solutions[selectedModel][selectedConnection][selectedSymptom];
+                if (relevantSolutions && relevantSolutions.length > 0) {
+                    relevantSolutions.forEach(solution => {
+                        const solutionItem = document.createElement('li');
+                        solutionItem.textContent = solution;
+                        solutionItem.classList.add('mb-2', 'text-gray-700');
+                        solutionsList.appendChild(solutionItem);
+                    });
+                } else {
+                    solutionsList.innerHTML = `<li class="text-gray-600">Aucune solution spécifique trouvée. Veuillez contacter le support technique.</li>`;
+                }
+            }
+        }
     </script>
 </body>
 </html>
